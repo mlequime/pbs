@@ -1,12 +1,15 @@
+@import "./variables";
+
 #root {
     display: flex;
     min-width: 100vw;
     min-height: 100vh;
+    background-color: $background;
 }
 
 #sidebar {
-    width: 22rem;
-    background-color: #f7f7f7;
+    width: 20rem;
+    background-color: white;
     border-right: solid 1px #e3e3e3;
     display: flex;
     flex-direction: column;
@@ -18,8 +21,8 @@
   }
   
   #sidebar h1 {
-    font-size: 1rem;
-    font-weight: 500;
+    font-size: 1.25rem;
+    font-weight: 600;
     display: flex;
     align-items: center;
     margin: 0;
@@ -35,17 +38,10 @@
     padding-top: 1rem;
   }
   
-  #sidebar nav a span {
-    float: right;
-    color: #eeb004;
-  }
-  #sidebar nav a.active span {
-    color: inherit;
-  }
-  
   i {
     color: #818181;
   }
+
   #sidebar nav .active i {
     color: inherit;
   }
@@ -79,12 +75,12 @@
   }
   
   #sidebar nav a.active {
-    background: hsl(224, 98%, 58%);
+    background: $accent;
     color: white;
   }
   
   #sidebar nav a.pending {
-    color: hsl(224, 98%, 58%);
+    color: $accent;
   }
   
   #detail {

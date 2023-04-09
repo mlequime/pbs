@@ -56,4 +56,10 @@ button:active {
   transform: translateY(1px);
 }
 
+h1 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0;
+  padding: 0;
+}
 @import "styles/layout";
