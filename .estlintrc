@@ -1,0 +1,6 @@
+{
+  "extends": ["eslint-config-pretty-strict"],
+  "parserOptions": {
+    "ecmaVersion": 2020
+  }
+}
