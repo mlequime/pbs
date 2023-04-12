@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Move } from "../models/move";
+import { Move } from "../../models/move";
 
 const moveSlice = createSlice(
     {

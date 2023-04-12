@@ -41,7 +41,7 @@ export default function Root() {
 
     const navLinkList = navLinks.map((link) => {
         return (
-            <li>
+            <li key={link.name}>
                 <NavLink to={link.path} className={
                     ({ isActive }) => isActive ? "active" : ""
                 }>{link.name}</NavLink>

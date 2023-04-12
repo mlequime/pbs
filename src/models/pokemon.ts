@@ -1,5 +1,3 @@
-import { Ability } from "./ability"
-import { Move } from "./move"
 
 export enum PokemonGenderRatio {
     FemaleOneEighth = 'FemaleOneEighth',
@@ -21,7 +19,7 @@ export interface PokemonEvYield {
 }
 
 export interface PokemonMoveDefinition {
-    move: Move,
+    move: string,
     level: number
 }
 
@@ -83,6 +81,7 @@ export interface PokemonEvolutionDefinition {
 export interface Pokemon {
     id: string;
     name: string;
+    types: string[];
     baseStats: {
         hp: number;
         attack: number;
@@ -97,10 +96,10 @@ export interface Pokemon {
     evYields?: PokemonEvYield[];
     catchRate?: number;
     happiness?: number;
-    abilities: Ability[];
-    hiddenAbilities?: Ability[];
+    abilities: string[];
+    hiddenAbilities?: string[];
     moves: PokemonMoveDefinition[];
-    eggMoves?: Move[];
+    eggMoves?: string[];
     eggGroups?: PokemonEggGroup[];
     hatchSteps?: number;
     height?: number;
