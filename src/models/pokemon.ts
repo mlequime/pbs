@@ -90,8 +90,8 @@ export interface Pokemon {
         specialDefense: number;
         speed: number;
     };
-    genderRatio?: PokemonGenderRatio;
-    growthRate: PokemonGrowthRate;
+    genderRatio?: PokemonGenderRatio | null;
+    growthRate: PokemonGrowthRate | null;
     baseExp?: number;
     evYields?: PokemonEvYield[];
     catchRate?: number;

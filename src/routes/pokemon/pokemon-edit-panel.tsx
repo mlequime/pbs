@@ -1,5 +1,5 @@
 import { Autocomplete, Chip, FormControl, Grid, TextField } from "@mui/material";
-import { Pokemon } from "../../models/pokemon";
+import { Pokemon, PokemonGenderRatio, PokemonGrowthRate } from "../../models/pokemon";
 import { useEffect, useState } from "react";
 import copy from "fast-copy";
 
@@ -24,6 +24,14 @@ export default function PokemonEditPanel(props: {
         })
     }
 
+    function handleFormAutocompleteChange(event: any, newInputValue: any) {
+        console.log(`event`, event);
+        console.log('newInputValue', newInputValue);
+        // setFormState({
+        //     ...formState,
+        //     [name]: newInputValue
+        // })
+    }
     const abilities = [
         {
             id: "overgrow",
@@ -58,7 +66,8 @@ export default function PokemonEditPanel(props: {
                             multiple
                             id="tags-filled"
                             options={abilities.map((ability) => ability.title)}
-                            defaultValue={[abilities[0].title]}
+                            value={formState.abilities}
+                            onChange={handleFormInputChange}
                             freeSolo
                             renderTags={(value: readonly string[], getTagProps) =>
                                 value.map((option: string, index: number) => (
@@ -80,7 +89,8 @@ export default function PokemonEditPanel(props: {
                             multiple
                             id="tags-filled"
                             options={abilities.map((ability) => ability.title)}
-                            defaultValue={[abilities[1].title]}
+                            value={formState.hiddenAbilities}
+                            onChange={handleFormInputChange}
                             freeSolo
                             renderTags={(value: readonly string[], getTagProps) =>
                                 value.map((option: string, index: number) => (
@@ -98,12 +108,28 @@ export default function PokemonEditPanel(props: {
                     </Grid>
                     <Grid item>
                         <h2>Categories</h2>
-                        <Grid container>
+                        <Grid container spacing={2}>
                             <Grid item>
-
+                                <Autocomplete
+                                    disablePortal
+                                    id="genderRatio"
+                                    options={Object.values(PokemonGenderRatio)}
+                                    value={formState.genderRatio || null}
+                                    onChange={handleFormInputChange}
+                                    sx={{ width: "16rem" }}
+                                    renderInput={(params) => <TextField {...params} label="Gender Ratio" />}
+                                />
                             </Grid>
                             <Grid item>
-                                
+                                <Autocomplete
+                                    disablePortal
+                                    id="growthRate"
+                                    options={Object.values(PokemonGrowthRate)}
+                                    value={formState.growthRate || null}
+                                    onChange={handleFormInputChange}
+                                    sx={{ width: "16rem" }}
+                                    renderInput={(params) => <TextField {...params} label="Growth Rate" />}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
