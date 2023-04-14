@@ -1,8 +1,8 @@
-import { combineReducers } from '@reduxjs/toolkit';
-import pokemonReducer from './pokemonReducer';
+import { combineReducers } from "@reduxjs/toolkit";
+import pokemonReducer from "./pokemonReducer";
 
 const appReducer = combineReducers({
-    pokemon: pokemonReducer,
-})
+  pokemon: pokemonReducer.reducer,
+});
 
 export default appReducer;

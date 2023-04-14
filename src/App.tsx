@@ -1,14 +1,22 @@
-import React from "react";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import React, { useEffect } from "react";
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import Root from './routes/root';
 import ErrorPage from './components/error-page';
-import Pokemon from './routes/pokemon/pokemons';
 import Abilities from "./routes/abilities/abilities";
-import Moves from "./routes/moves/moves";
-import Types from "./routes/types/types";
-import Items from "./routes/items/items";
-import Trainers from "./routes/trainers/trainers";
 import Encounters from "./routes/encounters/encounters";
+import Items from "./routes/items/items";
+import Moves from "./routes/moves/moves";
+import Pokemon from './routes/pokemon/pokemons';
+import Root from './routes/root';
+import Trainers from "./routes/trainers/trainers";
+import Types from "./routes/types/types";
+import { themeOptions } from "./styles/theme-options";
+import pokemonSlice from './state/reducers/pokemonReducer';
+import parsePokemonFile from './parsers/pokemon-parser';
+import { useDispatch } from 'react-redux';
+
+// const theme = createTheme(themeOptions);
+const theme = createTheme(themeOptions);
 
 
 const router = createBrowserRouter([
@@ -51,10 +59,23 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return (
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    async function getPokemon() {
+      const list = await parsePokemonFile('/test-pokemon-file.txt');
+      dispatch(pokemonSlice.actions.setPokemon(list));
+    }
+
+    getPokemon();
+  }, []);
+
+
+  return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={theme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </React.StrictMode>
   );
 }

@@ -1,0 +1,14 @@
+$layers: (
+  "base": 0,
+  "panel": 10,
+  "page-sidebar": 20,
+  "sidebar": 30,
+  "tooltip": 40,
+  "popover": 50,
+  "overlay": 60,
+  "modal": 70,
+);
+
+@mixin layer($layer) {
+  z-index: map-get($layers, $layer);
+}

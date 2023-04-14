@@ -1,12 +1,16 @@
-import { Box } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import React, { useState } from "react";
 import { Link, NavLink, Outlet } from "react-router-dom";
+import LinearProgressWithLabel from "../components/linear-progress-with-label";
+
 
 const pokeball = require("../assets/img/pokeball.png");
 
 export default function Root() {
 
     const [value, setValue] = useState(1);
+    const [progress, setProgress] = useState(10);
+    const [loaded, setLoaded] = useState(true);
 
     const navLinks = [
         {
@@ -42,9 +46,18 @@ export default function Root() {
     const navLinkList = navLinks.map((link) => {
         return (
             <li key={link.name}>
-                <NavLink to={link.path} className={
-                    ({ isActive }) => isActive ? "active" : ""
-                }>{link.name}</NavLink>
+                {
+                    loaded ? (
+                        <NavLink to={link.path} className={
+                            ({ isActive }) => isActive ? "active" : ""
+                        }>{link.name}</NavLink>
+                    ) : (
+                        <Box>
+                            <span>{link.name}</span>
+                        </Box>
+                    )
+                }
+
             </li>
         );
     });
@@ -65,7 +78,18 @@ export default function Root() {
                 </nav>
             </div>
             <div id="detail">
-                <Outlet></Outlet>
+                {
+                    loaded ? (
+                        <Outlet></Outlet>
+                    ) : (
+                        <Container sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: '1' }}>
+                            <LinearProgressWithLabel value={progress} sx={{ flex: '1' }} />
+                            <div>
+                                <h1>Loading...</h1>
+                            </div>
+                        </Container>
+                    )
+                }
             </div>
         </>
     );
