@@ -3,6 +3,7 @@ import {
   Pokemon,
   PokemonColor,
   PokemonEggGroup,
+  PokemonEvolutionDefinition,
   PokemonGenderRatio,
   PokemonGrowthRate,
   PokemonShape,
@@ -57,7 +58,12 @@ function parsePokemonBlock(block: string): Pokemon | null {
     growthRate: null,
   };
 
+  const errors = [];
+
   for (const line of lines.slice(1)) {
+    if (line.trim().startsWith("#")) {
+      continue;
+    }
     const [key, value] = line.split(" = ");
     switch (key) {
       case "Name":
@@ -116,7 +122,10 @@ function parsePokemonBlock(block: string): Pokemon | null {
         }
         break;
       case "EggMoves":
-        pokemon.eggMoves = value.split(valueSplitRegex);
+        pokemon.eggMoves = value.split(valueSplitRegex).map((v) => v.trim());
+        break;
+      case "TutorMoves":
+        pokemon.eggMoves = value.split(valueSplitRegex).map((v) => v.trim());
         break;
       case "EggGroups":
         pokemon.eggGroups = value.split(valueSplitRegex) as PokemonEggGroup[];
@@ -132,8 +141,14 @@ function parsePokemonBlock(block: string): Pokemon | null {
       case "Weight":
         pokemon.weight = value ? Number(value) : undefined;
         break;
+      case "Generation":
+        pokemon.generation = value ? Number(value) : undefined;
+        break;
       case "Color":
         pokemon.color = value as PokemonColor;
+        break;
+      case "Habitat":
+        pokemon.habitat = value;
         break;
       case "Shape":
         pokemon.shape = value as PokemonShape;
@@ -144,8 +159,35 @@ function parsePokemonBlock(block: string): Pokemon | null {
       case "Pokedex":
         pokemon.pokedex = value;
         break;
+      case "Evolutions":
+        const evoDefinitions = value.split(",");
+        for (let i = 0; i < evoDefinitions.length; i += 3) {
+          const evolution = evoDefinitions[i].trim();
+          const method = evoDefinitions[i + 1].trim();
+          const param = evoDefinitions[i + 2];
+          pokemon.evolutions?.push({
+            evolution,
+            method,
+            param,
+          });
+        }
+        break;
+      case "WildItemUncommon":
+        pokemon.wildItemCommon = value;
+        break;
+      case "WildItemCommon":
+        pokemon.wildItemCommon = value;
+        break;
+      case "WildItemRare":
+        pokemon.wildItemRare = value;
+        break;
       default:
+        errors.push(`Unknown key: ${key} with value: ${value}`);
+        break;
     }
+  }
+  if (errors.length) {
+    console.warn("Unknown properties for " + pokemon.name, errors);
   }
   return pokemon;
 }

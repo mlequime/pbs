@@ -54,15 +54,24 @@ export default function PokemonEditPanel(props: {
         }
     ]
 
+    const types = props.entity.types.map(t => {
+        return (
+            <span>{t}</span>
+        )
+    })
+
     return (
         props.entity.id ?
             (<div className="page-panel">
-                <Button variant="outlined" sx={{ marginBottom: 2 }}>
-                    <Typography variant="h1" sx={{ marginBottom: '0' }}>
-                        {props.entity.name}
-                        <FontAwesomeIcon icon={faCaretDown} size="xs" />
-                    </Typography>
-                </Button>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <Button variant="outlined" sx={{ marginBottom: 2 }}>
+                        <Typography variant="h1" sx={{ marginBottom: '0' }}>
+                            {props.entity.name}
+                            <FontAwesomeIcon icon={faCaretDown} size="xs" />
+                        </Typography>
+                    </Button>
+                    <div>{types}</div>
+                </Box>
                 <form>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={selectedTab} onChange={selectedTabChange} aria-label="Tabs for Pokemon Edit Form">

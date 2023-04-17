@@ -2335,6 +2335,7 @@ WildItemUncommon = BLACKSLUDGE
 Evolutions = MUK,Level,38
 #-------------------------------
 [MUK]
+# Testing comments here
 Name = Muk
 Types = POISON
 BaseStats = 105,105,75,50,65,100
@@ -2352,6 +2353,7 @@ EggGroups = Amorphous
 HatchSteps = 5120
 Height = 1.2
 Weight = 30.0
+# Testing comments here
 Color = Purple
 Shape = HeadArms
 Habitat = Urban
@@ -2727,6 +2729,7 @@ Pokedex = Originally from the tropics, Exeggutor's heads grow larger with exposu
 Generation = 1
 #-------------------------------
 [CUBONE]
+# Testing comments here
 Name = Cubone
 Types = GROUND
 BaseStats = 50,50,95,35,40,50
