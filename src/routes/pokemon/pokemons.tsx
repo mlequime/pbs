@@ -1,11 +1,10 @@
 import { useState } from "react";
 import CollapsingSidebar from "../../components/collapsing-sidebar";
 import { Pokemon } from "../../models/pokemon";
-import { bulbasaur } from "../../state/reducers/pokemonReducer";
 import PokemonEditPanel from "./pokemon-edit-panel";
 import PokemonSidebar from "./pokemon-sidebar";
 export default function Pokemons() {
-  const [selectedPokemon, setSelectedPokemon] = useState(bulbasaur);
+  const [selectedPokemon, setSelectedPokemon] = useState<Pokemon | undefined>(undefined);
 
 
   const selectPokemon = (pokemon: Pokemon) => {
@@ -17,7 +16,7 @@ export default function Pokemons() {
       <CollapsingSidebar>
         <PokemonSidebar onSelect={selectPokemon} />
       </CollapsingSidebar>
-      <PokemonEditPanel entity={selectedPokemon} />
+      {typeof selectedPokemon !== 'undefined' && <PokemonEditPanel entity={selectedPokemon} />}
     </div>
   );
 }

@@ -16,19 +16,15 @@ function parsePokemonFile(path: string): Promise<Pokemon[]> {
       fetch(path)
         .then((res) => res.text())
         .then((fileContent) => {
-          console.log(fileContent);
           // const fileContent = readFileSync(path, "utf-8");
           const pokemonBlocks = fileContent.split(/#[-]+\n/);
-
-          console.log(pokemonBlocks);
           pokemon = pokemonBlocks
             .map(parsePokemonBlock)
             .filter((p) => p !== null) as Pokemon[];
-          console.log(pokemon);
           resolve(pokemon);
         });
     } catch (e) {
-      console.log(e);
+      console.error(e);
       resolve([]);
     }
   });
@@ -60,14 +56,12 @@ function parsePokemonBlock(block: string): Pokemon | null {
 
   const errors = [];
 
-  for (const line of lines.slice(1)) {
-    if (line.trim().startsWith("#")) {
-      continue;
-    }
+  const parseLines = lines.slice(1).map((line) => line.trim()).filter((line) => line.length > 0 && !line.startsWith("#"));
+  for (const line of parseLines) {
     const [key, value] = line.split(" = ");
     switch (key) {
       case "Name":
-        pokemon.name = value;
+        pokemon.name = value.trim();
         break;
       case "Types":
         pokemon.types = value.split(",");

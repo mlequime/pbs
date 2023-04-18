@@ -1,33 +1,34 @@
-import { useSelector } from "react-redux";
-import { selectPokemonList } from "../../state/selectors/pokemonSelector";
-import { Pokemon } from "../../models/pokemon";
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, TextField } from "@mui/material";
+import { List, ListItem, ListItemButton, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { Pokemon } from "../../models/pokemon";
+import { selectTypeList } from "../../state/selectors/typeSelector";
+import { Type } from "../../models/type";
 
-export default function PokemonSidebar(props: {
+export default function TypeSidebar(props: {
     onSelect: Function
 }) {
 
     const [filter, setFilter] = useState("");
 
-    const pokemonList = useSelector(selectPokemonList)
+    const typeList = useSelector(selectTypeList)
 
-    const pokemonListItems = pokemonList.filter((pokemon) => !filter || pokemon.name?.toLowerCase().includes(filter)).map((pokemon) => {
+    const typeListItems = typeList.filter((type) => !filter || type.name?.toLowerCase().includes(filter)).map((type) => {
         return (
-            <ListItem disablePadding onClick={() => handleClick(pokemon)} key={pokemon.id} id={pokemon.id}>
+            <ListItem disablePadding onClick={() => handleClick(type)} key={type.id} id={type.id}>
                 <ListItemButton>
                     {/* <ListItemIcon>
                     </ListItemIcon> */}
-                    <ListItemText primary={pokemon.name}>
+                    <ListItemText primary={type.name}>
                     </ListItemText>
                 </ListItemButton>
             </ListItem>
         )
     })
 
-    function handleClick(pokemon: Pokemon) {
-        props.onSelect(pokemon);
+    function handleClick(type: Type) {
+        props.onSelect(type);
     }
 
     function handleFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -49,8 +50,8 @@ export default function PokemonSidebar(props: {
                 flex: '1 1 auto',
                 overflowY: 'auto',
             }}>
-                <List subheader={<ListSubheader>Pokémon</ListSubheader>}>
-                    {pokemonListItems}
+                <List subheader={<ListSubheader>Types</ListSubheader>}>
+                    {typeListItems}
                 </List>
             </Box>
         </Box>

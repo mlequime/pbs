@@ -14,6 +14,8 @@ import { themeOptions } from "./styles/theme-options";
 import pokemonSlice from './state/reducers/pokemonReducer';
 import parsePokemonFile from './parsers/pokemon-parser';
 import { useDispatch } from 'react-redux';
+import { parseTypeFile } from "./parsers/type-parser";
+import typeSlice from "./state/reducers/typeReducer";
 
 // const theme = createTheme(themeOptions);
 const theme = createTheme(themeOptions);
@@ -63,8 +65,10 @@ function App() {
 
   useEffect(() => {
     async function getPokemon() {
-      const list = await parsePokemonFile('/test-pokemon-file.txt');
-      dispatch(pokemonSlice.actions.setPokemon(list));
+      const typeList = await parseTypeFile('/test-type-file.txt');
+      const pokemonList = await parsePokemonFile('/test-pokemon-file.txt');
+      dispatch(pokemonSlice.actions.setPokemon(pokemonList));
+      dispatch(typeSlice.actions.setTypes(typeList));
     }
 
     getPokemon();

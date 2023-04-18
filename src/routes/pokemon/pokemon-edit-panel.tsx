@@ -1,4 +1,4 @@
-import { Autocomplete, Button, Chip, FormControl, Grid, Tab, Tabs, TextField, Typography } from "@mui/material";
+import { Autocomplete, Button, Chip, FormControl, Grid, InputLabel, MenuItem, Select, Tab, Tabs, TextField, Typography } from "@mui/material";
 import { Pokemon, PokemonGenderRatio, PokemonGrowthRate } from "../../models/pokemon";
 import { useEffect, useState } from "react";
 import copy from "fast-copy";
@@ -7,6 +7,7 @@ import TabPanel from "../../components/tab-panel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import TypeSelector from "../../components/form/type-selector";
 
 library.add(faCaretDown);
 
@@ -32,10 +33,21 @@ export default function PokemonEditPanel(props: {
         })
     }
 
-    function handleFormAutocompleteChange(event: React.SyntheticEvent, newInputValue: any, name: string) {
+    function handleFormValueChange(newInputValue: any, name: string) {
         setFormState({
             ...formState,
             [name]: newInputValue
+        })
+    }
+
+    function handleFormArrayValueChange(newInputValue: any, name: string, index: number) {
+        const key = name as keyof Pokemon;
+        const oldValue = formState[key] as Array<any>
+        oldValue[index] = newInputValue;
+
+        setFormState({
+            ...formState,
+            [key]: oldValue
         })
     }
 
@@ -54,9 +66,9 @@ export default function PokemonEditPanel(props: {
         }
     ]
 
-    const types = props.entity.types.map(t => {
+    const types = props.entity.types.map((type, i) => {
         return (
-            <span>{t}</span>
+            <TypeSelector id={'type' + (i + 1)} label={`Type ${i + 1}`} key={`type-${i + 1}`} value={type} onSelect={(value: string) => handleFormArrayValueChange(value, 'types', i)} />
         )
     })
 
@@ -70,7 +82,7 @@ export default function PokemonEditPanel(props: {
                             <FontAwesomeIcon icon={faCaretDown} size="xs" />
                         </Typography>
                     </Button>
-                    <div>{types}</div>
+                    <div className="types">{types}</div>
                 </Box>
                 <form>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -104,7 +116,7 @@ export default function PokemonEditPanel(props: {
                                     id="tags-filled"
                                     options={abilities.map((ability) => ability.title)}
                                     value={formState.abilities || []}
-                                    onChange={(event, newInputValue) => handleFormAutocompleteChange(event, newInputValue, 'abilities')}
+                                    onChange={(event, newInputValue) => handleFormValueChange(newInputValue, 'abilities')}
                                     freeSolo
                                     renderTags={(value: readonly string[], getTagProps) =>
                                         value.map((option: string, index: number) => (
@@ -129,7 +141,7 @@ export default function PokemonEditPanel(props: {
                                     id="tags-filled"
                                     options={abilities.map((ability) => ability.title)}
                                     value={formState.hiddenAbilities || []}
-                                    onChange={handleFormAutocompleteChange}
+                                    onChange={(event, newInputValue) => handleFormValueChange(newInputValue, 'hiddenAbilities')}
                                     freeSolo
                                     renderTags={(value: readonly string[], getTagProps) =>
                                         value.map((option: string, index: number) => (

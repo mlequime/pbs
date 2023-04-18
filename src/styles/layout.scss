@@ -10,7 +10,7 @@
 
 #sidebar,
 .collapsing-sidebar {
-  width: 18rem;
+  width: 13.5rem;
   background-color: white;
   overflow-y: auto;
   height: 100vh;
@@ -127,4 +127,5 @@
 
 .page-panel {
   padding: 2rem 4rem;
+  flex: 1;
 }
