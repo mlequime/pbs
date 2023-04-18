@@ -2,10 +2,10 @@ import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import { useSelector } from 'react-redux';
 import { selectTypeList } from '../../state/selectors/typeSelector';
 import { ReactNode, useEffect, useState } from 'react';
-export default function TypeSelector(props: {
+export default function TypeSelect(props: {
     id: string,
     label: string,
-    value: string,
+    value: string | undefined,
     onSelect?: Function
 }) {
 
@@ -25,7 +25,7 @@ export default function TypeSelector(props: {
     }
 
     return (
-        <FormControl fullWidth>
+        <FormControl fullWidth variant="filled">
             <InputLabel id={`type-select-label-${props.id}`}>{props.label}</InputLabel>
             <Select
                 labelId={`type-select-label-${props.id}`}

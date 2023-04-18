@@ -65,8 +65,8 @@ function App() {
 
   useEffect(() => {
     async function getPokemon() {
-      const typeList = await parseTypeFile('/test-type-file.txt');
-      const pokemonList = await parsePokemonFile('/test-pokemon-file.txt');
+      const typeList = await parseTypeFile(`PBS/types.txt`);
+      const pokemonList = await parsePokemonFile(`PBS/pokemon.txt`);
       dispatch(pokemonSlice.actions.setPokemon(pokemonList));
       dispatch(typeSlice.actions.setTypes(typeList));
     }

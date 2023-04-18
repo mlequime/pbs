@@ -7,7 +7,7 @@ import TabPanel from "../../components/tab-panel";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
-import TypeSelector from "../../components/form/type-selector";
+import TypeSelect from "../../components/form/type-select";
 
 library.add(faCaretDown);
 
@@ -68,7 +68,7 @@ export default function PokemonEditPanel(props: {
 
     const types = props.entity.types.map((type, i) => {
         return (
-            <TypeSelector id={'type' + (i + 1)} label={`Type ${i + 1}`} key={`type-${i + 1}`} value={type} onSelect={(value: string) => handleFormArrayValueChange(value, 'types', i)} />
+            <TypeSelect id={'type' + (i + 1)} label={`Type ${i + 1}`} key={`type-${i + 1}`} value={type} onSelect={(value: string) => handleFormArrayValueChange(value, 'types', i)} />
         )
     })
 

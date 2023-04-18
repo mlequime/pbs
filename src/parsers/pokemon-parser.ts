@@ -40,7 +40,7 @@ function parsePokemonBlock(block: string): Pokemon | null {
   const pokemon: Pokemon = {
     id: name,
     name: "",
-    types: [],
+    types: ["", ""],
     baseStats: {
       hp: 0,
       attack: 0,
@@ -56,7 +56,10 @@ function parsePokemonBlock(block: string): Pokemon | null {
 
   const errors = [];
 
-  const parseLines = lines.slice(1).map((line) => line.trim()).filter((line) => line.length > 0 && !line.startsWith("#"));
+  const parseLines = lines
+    .slice(1)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0 && !line.startsWith("#"));
   for (const line of parseLines) {
     const [key, value] = line.split(" = ");
     switch (key) {
@@ -64,7 +67,8 @@ function parsePokemonBlock(block: string): Pokemon | null {
         pokemon.name = value.trim();
         break;
       case "Types":
-        pokemon.types = value.split(",");
+        const types = value.split(valueSplitRegex);
+        pokemon.types = types.length <= 2 ? [types[0], types[1] || ""] : types;
         break;
       case "BaseStats":
         const [hp, attack, defense, specialAttack, specialDefense, speed] =

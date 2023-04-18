@@ -80,7 +80,7 @@ export interface PokemonEvolutionDefinition {
 export interface Pokemon {
   id: string;
   name: string;
-  types: string[];
+  types: Array<string>;
   baseStats: {
     hp: number;
     attack: number;

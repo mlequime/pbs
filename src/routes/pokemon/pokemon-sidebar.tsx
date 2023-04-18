@@ -1,45 +1,62 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectPokemonList } from "../../state/selectors/pokemonSelector";
 import { Pokemon } from "../../models/pokemon";
-import { List, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, TextField } from "@mui/material";
+import { List as MUIList, ListItem, ListItemButton, ListItemIcon, ListItemText, ListSubheader, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { selectPokemonSelected } from "../../state/selectors/pokemonSelector";
+import pokemonSlice from "../../state/reducers/pokemonReducer";
+import { FixedSizeList as List } from 'react-window';
 
 export default function PokemonSidebar(props: {
-    onSelect: Function
+    onSelect?: Function
 }) {
+    const [dims, setDims] = useState({
+        width: 300,
+        height: 600
+    });
+    const ref = useRef<any>(null);
+
+    useLayoutEffect(() => {
+        if (ref.current) {
+            setDims({
+                width: ref.current.clientWidth,
+                height: ref.current.clientHeight,
+            });
+        }
+    }, [ref]);
 
     const [filter, setFilter] = useState("");
+    const dispatch = useDispatch();
 
-    const pokemonList = useSelector(selectPokemonList)
+    const pokemonList = useSelector(selectPokemonList);
+    const pokemonSelected = useSelector(selectPokemonSelected);
 
-    const pokemonListItems = pokemonList.filter((pokemon) => !filter || pokemon.name?.toLowerCase().includes(filter)).map((pokemon) => {
-        return (
-            <ListItem disablePadding onClick={() => handleClick(pokemon)} key={pokemon.id} id={pokemon.id}>
-                <ListItemButton>
-                    {/* <ListItemIcon>
-                    </ListItemIcon> */}
-                    <ListItemText primary={pokemon.name}>
-                    </ListItemText>
-                </ListItemButton>
-            </ListItem>
-        )
-    })
+    const filteredList = pokemonList.filter((pokemon) => !filter || pokemon.name?.toLowerCase().includes(filter));
 
     function handleClick(pokemon: Pokemon) {
-        props.onSelect(pokemon);
+        dispatch(pokemonSlice.actions.selectPokemon(pokemon));
     }
 
     function handleFilterChange(event: React.ChangeEvent<HTMLInputElement>) {
         setFilter(event.target.value);
     }
 
+    const Row = ({ index, style }: any) => (
+        <ListItem disablePadding onClick={() => handleClick(filteredList[index])} style={style}>
+            <ListItemButton selected={pokemonSelected == filteredList[index]}>
+                <ListItemText primary={filteredList[index].name}>
+                </ListItemText>
+            </ListItemButton>
+        </ListItem>);
+
     return (
         <Box sx={{
             display: 'flex',
             flexDirection: 'column',
             height: '100%',
-        }}>
+        }}
+            ref={ref}>
             <Box sx={{
                 flex: '0 0 auto',
             }} padding={2}>
@@ -49,9 +66,17 @@ export default function PokemonSidebar(props: {
                 flex: '1 1 auto',
                 overflowY: 'auto',
             }}>
-                <List subheader={<ListSubheader>Pokémon</ListSubheader>}>
-                    {pokemonListItems}
+                {/* <MUIList subheader={<ListSubheader>Pokémon</ListSubheader>}> */}
+                <List
+                    height={dims.height}
+                    width={dims.width}
+                    itemCount={filteredList.length}
+                    itemSize={48}
+                >
+                    {Row}
                 </List>
+                {/* {pokemonListItems} */}
+                {/* </MUIList> */}
             </Box>
         </Box>
     );

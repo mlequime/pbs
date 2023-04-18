@@ -13,6 +13,7 @@ const pokemonSlice = createSlice({
   name: "pokemon",
   initialState: {
     items: [],
+    selected: undefined,
     dirty: false,
   } as PokemonState,
   reducers: {
@@ -21,6 +22,18 @@ const pokemonSlice = createSlice({
     },
     setPokemon(state, action: PayloadAction<Pokemon[]>) {
       state.items = action.payload;
+      if (!state.selected && state.items.length > 0) {
+        state.selected = state.items[0];
+      }
+    },
+    selectPokemon(state, action: PayloadAction<Pokemon>) {
+      state.selected = action.payload;
+    },
+    deselectPokemon(state) {
+      state.selected = undefined;
+    },
+    setPokemonDirty(state, action: PayloadAction<boolean>) {
+      state.dirty = action.payload;
     },
   },
 });
